@@ -28,14 +28,19 @@ npm i -D wcrane-tool
 - 支持自定义git tag格式
 - 支持自定义版本号等级
 
-#### pkg init
-初始化配置
+####  init
+初始化配置，生成配置文件
+- 使用
 ```shell
 pkg init
 ```
-#### pkg publish
+#### publish
 发布到npm & 同步到git
 
+- 使用：
+```shell
+pkg publish
+```
 ##### 支持自定义配置
 
 esm配置文件
