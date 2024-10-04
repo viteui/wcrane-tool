@@ -4,6 +4,7 @@ const { execSync } = require('child_process');
 
 
 function publish() {
+    const pkgDir = path.resolve(__dirname, '.');
     // 升级./pkg下 package.json的版本号最后一位+1
     const pkgJsonPath = path.resolve(pkgDir, 'package.json');
     const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath));
