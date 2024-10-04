@@ -38,4 +38,4 @@ function publish() {
     execSync('git push');
 }
 
-export default publish;
+module.exports = publish;
