@@ -127,7 +127,7 @@ async function publish() {
         log.success('git sync success');
     }
     if (config.syncGitTag) {
-        const syncGitTagSpinner = spinnerStart("git tag syncing ...")
+        const syncGitTagSpinner = spinnerStart("git tag syncing ... \n")
         let tag = `v${pkgJson.version}`
         if (config.gitTagFormat && typeof config.gitTagFormat === 'function') {
             tag = config.gitTagFormat(pkgJson.version);
