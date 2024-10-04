@@ -10,22 +10,29 @@
 esm配置文件
 ```js
 import { execSync } from 'child_process'
-export default {
-    root: ".", // 项目根目录
-    syncGit: true, // 是否同步到git
-    // 发布版本号自动升级等级
+export default{
+    // 发布目录
+    root: ".",
+    // 是否同步git
+    syncGit: true,
+    // 是否同步git tag
+    syncGitTag: true,
+    // 升级版本号的等级
     versionLevel: 'patch', // major | minor | patch
-    // 是否自定义发布
-    customPublish: false, 
+    // 自定义发布
+    customPublish: false,
     // 发布前执行
-    before(config) {
+    before() {
         // console.log(config)
-        // execSync('npm publish')
     },
     // 发布后执行
-    after(config) {
+    after() {
         // console.log(config)
-    }
+    },
+    // git tag 格式
+    gitTagFormat: (version) => {
+        return `v${version}`
+    },
 }
 ```
 
