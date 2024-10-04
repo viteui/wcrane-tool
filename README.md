@@ -23,6 +23,8 @@ import { execSync } from 'child_process'
 export default{
     // 发布目录
     root: ".",
+    // git 仓库根目录, 不填写则跟root一致
+    gitRoot: '.',
     // 是否同步git
     syncGit: true,
     // 是否同步git tag
@@ -31,6 +33,7 @@ export default{
     versionLevel: 'patch', // major | minor | patch
     // 自定义发布
     customPublish: false,
+    
     // 发布前执行
     before() {
         // console.log(config)
