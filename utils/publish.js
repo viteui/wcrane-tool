@@ -12,6 +12,7 @@ const versionLevelMap = {
 const defaultPublishConfig = {
     root: ".",
     syncGit: true,
+    syncGitTag: true,
     // 升级版本号的等级
     versionLevel: 'patch',
     customPublish: false, // 自定义发布
@@ -22,7 +23,11 @@ const defaultPublishConfig = {
     // 发布后执行
     after() {
 
-    }
+    },
+    // git tag 格式
+    gitTagFormat: (version) => {
+        return `v${version}`
+    },
 }
 
 async function loadPublishConfig(publishConfigPath) {
@@ -98,6 +103,7 @@ async function publish() {
     // 打包 流输出日志
     if (!config.customPublish) {
         execSync('npm publish');
+        console.log('Publish success');
     }
 
     if (config.syncGit) {
@@ -105,7 +111,19 @@ async function publish() {
         execSync('git add .');
         execSync('git commit -m "publish version ' + pkgJson.version + '"');
         execSync('git push');
+        console.log('Sync git success');
     }
+    if (config.syncGitTag) {
+        let tag = `v${pkgJson.version}`
+        if (config.gitTagFormat && typeof config.gitTagFormat === 'function') {
+            tag = config.gitTagFormat(pkgJson.version);
+        }
+        // 每一次发布打一个tag
+        execSync('git tag ' + tag);
+        execSync('git push origin ' + tag);
+        console.log('Sync git tag success');
+    }
+
     if (config.after && typeof config.after === 'function') {
         config.after({
             cwdPath,
@@ -115,7 +133,6 @@ async function publish() {
             packageJson: pkgJson
         });
     }
-    console.log('Publish success');
 
 }
 
