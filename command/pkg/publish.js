@@ -81,7 +81,7 @@ async function publish() {
     log.info('root dir', pkgDir);
     // 执行前钩子
     if (config.before && typeof config.before === 'function') {
-        config.before({
+        await config.before({
             cwdPath,
             pkgDir,
             ...config
@@ -122,34 +122,45 @@ async function publish() {
         execSync('npm publish');
         npmSpinner.stop();
         log.success('npm publish success');
+    } else {
+        npmSpinner.stop();
     }
 
     const gitDir = path.resolve(cwdPath, config.gitRoot || config.root || ".");
     log.info('git root dir', gitDir);
     process.chdir(gitDir);
-    if (config.syncGit) {
-        const syncGitSpinner = spinnerStart("git syncing ...")
-        // 需要到相应的 pkgDir 目录下执行 execSync
-        // 同步git
-        execSync('git add .');
-        execSync('git commit -m "publish version ' + pkgJson.version + '"');
-        execSync('git push');
-        syncGitSpinner.stop();
-        log.success('git sync success');
-    }
-    if (config.syncGitTag) {
-        const syncGitTagSpinner = spinnerStart("git tag syncing ... \n")
-        let tag = `v${pkgJson.version}`
-        if (config.gitTagFormat && typeof config.gitTagFormat === 'function') {
-            tag = config.gitTagFormat(pkgJson.version);
+    // 检查git 状态 是否有变更
+    const gitStatus = execSync('git status').toString().trim();
+    if (gitStatus.includes('Changes to be committed'
+        || gitStatus.includes('Untracked files')
+        || gitStatus.includes('nothing to commit, working tree clean')
+    )) {
+        console.warn('git status', gitStatus);
+    } else {
+        if (config.syncGit) {
+            const syncGitSpinner = spinnerStart("git syncing ...")
+            // 同步git
+            execSync('git add .');
+            execSync('git commit -m "publish version ' + pkgJson.version + '"');
+            execSync('git push');
+            syncGitSpinner.stop();
+            log.success('git sync success');
         }
-        process.chdir(pkgDir);
-        // 每一次发布打一个tag
-        execSync('git tag ' + tag);
-        execSync('git push origin ' + tag);
-        syncGitTagSpinner.stop();
-        log.success('git tag sync success');
+        if (config.syncGitTag) {
+            const syncGitTagSpinner = spinnerStart("git tag syncing ... \n")
+            let tag = `v${pkgJson.version}`
+            if (config.gitTagFormat && typeof config.gitTagFormat === 'function') {
+                tag = config.gitTagFormat(pkgJson.version);
+            }
+            process.chdir(pkgDir);
+            // 每一次发布打一个tag
+            execSync('git tag ' + tag);
+            execSync('git push origin ' + tag);
+            syncGitTagSpinner.stop();
+            log.success('git tag sync success');
+        }
     }
+
 
     if (config.after && typeof config.after === 'function') {
         config.after({
