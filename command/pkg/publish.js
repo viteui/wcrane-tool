@@ -118,13 +118,16 @@ async function publish() {
     }
 
     if (config.syncGit) {
+        const syncGitSpinner = spinnerStart("git syncing ...")
         // 同步git
         execSync('git add .');
         execSync('git commit -m "publish version ' + pkgJson.version + '"');
         execSync('git push');
-        console.log('Sync git success');
+        syncGitSpinner.stop();
+        log.success('git sync success');
     }
     if (config.syncGitTag) {
+        const syncGitTagSpinner = spinnerStart("git tag syncing ...")
         let tag = `v${pkgJson.version}`
         if (config.gitTagFormat && typeof config.gitTagFormat === 'function') {
             tag = config.gitTagFormat(pkgJson.version);
@@ -132,7 +135,8 @@ async function publish() {
         // 每一次发布打一个tag
         execSync('git tag ' + tag);
         execSync('git push origin ' + tag);
-        console.log('Sync git tag success');
+        syncGitTagSpinner.stop();
+        log.success('git tag sync success');
     }
 
     if (config.after && typeof config.after === 'function') {
