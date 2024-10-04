@@ -34,11 +34,12 @@ const defaultPublishConfig = {
     },
 }
 
-async function loadPublishConfig(publishConfigPath) {
+async function loadPublishConfig(publishConfigPath, pkgJson) {
     if (fs.existsSync(publishConfigPath)) {
         // Check if the environment supports 'require' (CommonJS)
         try {
-            if (typeof require !== 'undefined') {
+            // 如果类型为commonjs相关的使用require 
+            if (typeof require !== 'undefined' && pkgJson.type !== 'module') {
                 return require(publishConfigPath);
             }
         } catch (error) {
@@ -46,7 +47,6 @@ async function loadPublishConfig(publishConfigPath) {
             const publishConfig = await import(publishConfigPath);
             return publishConfig.default || publishConfig;
         }
-
     }
     return defaultPublishConfig;
 }
@@ -56,10 +56,14 @@ async function publish() {
     // 获取当前终端指令的目录
     const cwdPath = process.cwd();
     const publishConfigPath = path.resolve(cwdPath, './publish.config.js');
+
     let config = defaultPublishConfig;
     if (fs.existsSync(publishConfigPath)) {
+        // 获取当前目录下的package.json  的type字段，如果是module，则使用esm
+        const pkgJson = JSON.parse(fs.readFileSync(path.resolve(cwdPath, './package.json')));
+
         // 读取配置js 文件
-        const publishConfig = await loadPublishConfig(publishConfigPath);
+        const publishConfig = await loadPublishConfig(publishConfigPath, pkgJson || {});
         if (publishConfig) {
             config = {
                 ...config,
