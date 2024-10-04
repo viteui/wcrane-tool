@@ -42,7 +42,7 @@ async function loadPublishConfig(publishConfigPath) {
     return defaultPublishConfig;
 }
 async function publish() {
-    console.log('publish....');
+    console.log('Publishing....');
 
     // 获取当前终端指令的目录
     const cwdPath = process.cwd();
@@ -115,6 +115,7 @@ async function publish() {
             packageJson: pkgJson
         });
     }
+    console.log('Publish success');
 
 }
 

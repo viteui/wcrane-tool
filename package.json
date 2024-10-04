@@ -1,6 +1,6 @@
 {
   "name": "wcrane-tool",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,6 +21,6 @@
   "description": "",
   "dependencies": {
     "commander": "^12.1.0",
-    "wcrane-tool": "^1.0.8"
+    "wcrane-tool": "^1.0.11"
   }
 }
