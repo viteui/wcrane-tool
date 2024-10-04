@@ -3,7 +3,7 @@
 ## pkg 指令
 
 ### pkg publish
-发布到npm
+发布到npm & 同步到git
 
 #### 支持自定义配置
 
