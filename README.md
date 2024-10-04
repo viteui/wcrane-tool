@@ -1,21 +1,28 @@
 # 脚手架集合
 
 ## 安装
+1. 全局安装
 ```shell
 npm i -g wcrane-tool
 ```
+2. 局部安装
+```shell
+npm i -D wcrane-tool
+```
 
-## pkg 指令
+## 使用
 
-### pkg init
+### pkg 指令
+
+#### pkg init
 初始化配置
 ```shell
 pkg init
 ```
-### pkg publish
+#### pkg publish
 发布到npm & 同步到git
 
-#### 支持自定义配置
+##### 支持自定义配置
 
 esm配置文件
 ```js
@@ -57,7 +64,7 @@ module.exports = {
 }
 ```
 
-## 实践案例
+### 实践案例
 发布 [tinypng-lib-wasm](https://github.com/viteui/tinypng-lib-wasm/tree/master) wasm 的包
 1. 项目发布前 构建wasm包，构建完成之后同步 README.md中的说明到 tinypng-lib-wasm npm包中
 2. 构建后修改Cargo.toml中的版本号
