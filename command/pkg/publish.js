@@ -21,6 +21,8 @@ const defaultPublishConfig = {
     versionLevel: 'patch', // major | minor | patch
     // 自定义发布
     customPublish: false,
+    // git root目录
+    gitRoot: '.',
     // 发布前执行
     before() {
         // console.log(config)
@@ -74,8 +76,9 @@ async function publish() {
             };
         }
     }
-    const pkgDir = path.resolve(cwdPath, config.root || '.');
-    log.info('root dir ', pkgDir);
+    const rootDir = config.root || ".";
+    const pkgDir = path.resolve(cwdPath, rootDir);
+    log.info('root dir', pkgDir);
     // 执行前钩子
     if (config.before && typeof config.before === 'function') {
         config.before({
@@ -111,15 +114,22 @@ async function publish() {
     // 新版本
     fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
 
+    process.chdir(pkgDir);
     // 打包 流输出日志
     if (!config.customPublish) {
+
+        //需要到相应的 pkgDir 目录下执行 execSync
         execSync('npm publish');
         npmSpinner.stop();
         log.success('npm publish success');
     }
 
+    const gitDir = path.resolve(cwdPath, config.gitRoot || config.root || ".");
+    log.info('git root dir', gitDir);
+    process.chdir(gitDir);
     if (config.syncGit) {
         const syncGitSpinner = spinnerStart("git syncing ...")
+        // 需要到相应的 pkgDir 目录下执行 execSync
         // 同步git
         execSync('git add .');
         execSync('git commit -m "publish version ' + pkgJson.version + '"');
@@ -133,6 +143,7 @@ async function publish() {
         if (config.gitTagFormat && typeof config.gitTagFormat === 'function') {
             tag = config.gitTagFormat(pkgJson.version);
         }
+        process.chdir(pkgDir);
         // 每一次发布打一个tag
         execSync('git tag ' + tag);
         execSync('git push origin ' + tag);

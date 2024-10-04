@@ -13,6 +13,8 @@ const configTemplate = `{
     versionLevel: 'patch', // major | minor | patch
     // 自定义发布
     customPublish: false,
+    // git 仓库根目录, 不填写则跟root一致
+    gitRoot: '.',
     // 发布前执行
     before(config) {
         // console.log(config)

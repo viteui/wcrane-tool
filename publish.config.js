@@ -10,6 +10,7 @@ module.exports = {
     versionLevel: 'patch', // major | minor | patch
     // 自定义发布
     customPublish: false,
+
     // 发布前执行
     before(config) {
         // console.log(config)
