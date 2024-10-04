@@ -1,0 +1,20 @@
+{
+  "name": "wcrane-tool",
+  "version": "1.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "p": "node ./publish.js"
+  },
+  "bin": {
+    "pkg": "/bin/pkg.js"
+  },
+  "type": "commonjs",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "commander": "^12.1.0"
+  }
+}
