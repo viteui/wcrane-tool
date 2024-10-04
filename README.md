@@ -1,7 +1,17 @@
 # 脚手架集合
 
+## 安装
+```shell
+npm i -g wcrane-tool
+```
+
 ## pkg 指令
 
+### pkg init
+初始化配置
+```shell
+pkg init
+```
 ### pkg publish
 发布到npm & 同步到git
 

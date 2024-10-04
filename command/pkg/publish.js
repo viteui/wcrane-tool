@@ -75,6 +75,7 @@ async function publish() {
         }
     }
     const pkgDir = path.resolve(cwdPath, config.root || '.');
+    log.info('root dir ', pkgDir);
     // 执行前钩子
     if (config.before && typeof config.before === 'function') {
         config.before({
