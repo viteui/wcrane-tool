@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const log = require('../../utils/log');
 const configTemplate = `{
     // 发布目录
     root: ".",
@@ -34,7 +35,7 @@ const commonTemplate = `
 module.exports = ${configTemplate}
 `
 module.exports = async function init() {
-    console.log('init')
+    console.log('initing....')
     // 获取当前终端指令的目录
     const cwdPath = process.cwd();
     // 创建默认配置文件
@@ -42,15 +43,19 @@ module.exports = async function init() {
     // 获取当前目录下的package.json  的type字段，如果是module，则使用esm
     const pkgJson = JSON.parse(fs.readFileSync(path.resolve(cwdPath, './package.json')));
     const type = pkgJson.type || 'commonjs';
+    log.verbose("node type: " + type)
     // 不存在的话 在当前目录下创建一个 publish.config.js文件
     if (!fs.existsSync(path.resolve(cwdPath, './publish.config.js'))) {
         if (type === 'module') {
             fs.writeFileSync(path.resolve(cwdPath, './publish.config.js'), esmTemplate, 'utf-8');
         }
         fs.writeFileSync(path.resolve(cwdPath, './publish.config.js'), commonTemplate, 'utf-8');
+        log.success('publish.config.js创建成功')
     } else {
-        console.log('publish.config.js已存在')
+        log.warn('publish.config.js 已存在')
     }
+
+    log.success('init success')
 
 
 }

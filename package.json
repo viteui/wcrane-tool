@@ -1,6 +1,6 @@
 {
   "name": "wcrane-tool",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -20,7 +20,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cli-spinner": "^0.2.10",
     "commander": "^12.1.0",
+    "npmlog": "^7.0.1",
     "wcrane-tool": "^1.0.13"
   }
 }

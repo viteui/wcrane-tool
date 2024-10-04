@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-
+const { spinnerStart } = require('../../utils');
+const log = require('../../utils/log');
 // 版本号等级对应数组项
 const versionLevelMap = {
     major: 0,
@@ -51,7 +52,8 @@ async function loadPublishConfig(publishConfigPath, pkgJson) {
     return defaultPublishConfig;
 }
 async function publish() {
-    console.log('Publishing....');
+    // console.log('Publishing....');
+    const npmSpinner = spinnerStart("npm publishing ...")
 
     // 获取当前终端指令的目录
     const cwdPath = process.cwd();
@@ -111,7 +113,8 @@ async function publish() {
     // 打包 流输出日志
     if (!config.customPublish) {
         execSync('npm publish');
-        console.log('Publish success');
+        npmSpinner.stop();
+        log.success('npm publish success');
     }
 
     if (config.syncGit) {
