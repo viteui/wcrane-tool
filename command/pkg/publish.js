@@ -39,7 +39,7 @@ const defaultPublishConfig = {
 
 async function loadPublishConfig(publishConfigPath, pkgJson) {
     if (fs.existsSync(publishConfigPath)) {
-        log.success(`Found publish config file: ${publishConfigPath}`);
+        log.success("\n" + `Found publish config file: ${publishConfigPath}`);
         // Check if the environment supports 'require' (CommonJS)
         try {
             // 如果类型为commonjs相关的使用require 
@@ -47,6 +47,7 @@ async function loadPublishConfig(publishConfigPath, pkgJson) {
                 return require(publishConfigPath);
             }
         } catch (error) {
+            log.log(error);
             // Otherwise, use dynamic import for ES modules
             const publishConfig = await import(publishConfigPath);
             return publishConfig.default || publishConfig;
@@ -79,7 +80,7 @@ async function publish() {
     }
     const rootDir = config.root || ".";
     const pkgDir = path.resolve(cwdPath, rootDir);
-    log.info('root dir', pkgDir);
+    log.info('\nroot dir', pkgDir);
     // 执行前钩子
     if (config.before && typeof config.before === 'function') {
         await config.before({
