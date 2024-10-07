@@ -2,13 +2,22 @@
 
 
 // 引入log模块
-const log = require('npmlog')
+const chalk = require('chalk')
 
-//   修改 handing
-log.headingStyle = { fg: 'white', bg: 'black' };
-log.heading = "wcrane"   // 修改前缀
-//  debug 模式定制
-log.level = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : 'info'  // 判断debug模式
-log.addLevel("success", 2000, { fg: "green", bold: true })
+const logger = {
+    success: (...msg) => {
+        console.log.apply(console, [chalk.green('success:'), ...msg])
+    },
+    error: (...msg) => {
+        console.log.apply(console, [chalk.red('error:'), ...msg])
+    },
+    info: (...msg) => {
+        console.log.apply(console, [chalk.blue('info:'), ...msg])
+    },
+    warn: (...msg) => {
+        console.log.apply(console, [chalk.yellow('warn:'), ...msg])
+    },
 
-module.exports = log;
+}
+
+module.exports = logger;
