@@ -7,7 +7,8 @@ const chalk = require('chalk')
 const levels = {
     error: 0,
     warn: 1,
-    info: 2,
+    success: 2,
+    info: 3,
     verbose: 4,
     debug: 5,
 };
@@ -24,7 +25,7 @@ const getLoggerLevelNum = () => {
 
 const logger = {
     success: (...msg) => {
-        if (getLoggerLevelNum() >= levels.success) {
+        if (getLoggerLevelNum() <= levels.success) {
             console.log.apply(console, [chalk.green('\nsuccess:'), ...msg])
         }
 
