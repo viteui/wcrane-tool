@@ -25,7 +25,6 @@ const getLoggerLevelNum = () => {
 
 const logger = {
     success: (...msg) => {
-        console.log(getLoggerLevelNum());
         if (getLoggerLevelNum() >= levels.success) {
             console.log.apply(console, [chalk.green('\nsuccess:'), ...msg])
         }
