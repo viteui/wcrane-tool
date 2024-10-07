@@ -172,7 +172,8 @@ async function publish() {
             packageJson: pkgJson
         });
     }
-
+    const updateNpm = `${pkgJson.name}/@${pkgJson.version}`
+    console.success(`updated success: \n yarn add ${updateNpm} \n npm i ${updateNpm}`)
 }
 
 module.exports = publish;
