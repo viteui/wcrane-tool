@@ -39,6 +39,7 @@ const defaultPublishConfig = {
 
 async function loadPublishConfig(publishConfigPath, pkgJson) {
     if (fs.existsSync(publishConfigPath)) {
+        log.success(`Found publish config file: ${publishConfigPath}`);
         // Check if the environment supports 'require' (CommonJS)
         try {
             // 如果类型为commonjs相关的使用require 
