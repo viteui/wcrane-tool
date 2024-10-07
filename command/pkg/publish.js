@@ -42,7 +42,7 @@ async function loadPublishConfig(publishConfigPath, pkgJson) {
         // Check if the environment supports 'require' (CommonJS)
         try {
             // 如果类型为commonjs相关的使用require 
-            if (typeof require !== 'undefined' && pkgJson.type !== 'module') {
+            if (typeof require !== 'undefined') {
                 return require(publishConfigPath);
             }
         } catch (error) {
