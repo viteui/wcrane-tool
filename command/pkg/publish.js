@@ -172,8 +172,8 @@ async function publish() {
             packageJson: pkgJson
         });
     }
-    const updateNpm = `${pkgJson.name}/@${pkgJson.version}`
-    log.success(`updated success: \n yarn add ${updateNpm} \n npm i ${updateNpm}`)
+    const updateNpm = `${pkgJson.name}@${pkgJson.version}`
+    log.success(`updated dependencies shell: \n yarn add ${updateNpm} \n npm i ${updateNpm}`)
 }
 
 module.exports = publish;
