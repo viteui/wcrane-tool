@@ -39,7 +39,7 @@ const defaultPublishConfig = {
 
 async function loadPublishConfig(publishConfigPath, pkgJson) {
     if (fs.existsSync(publishConfigPath)) {
-        log.success("\n" + `Found publish config file: ${publishConfigPath}`);
+        log.success(`Found publish config file: ${publishConfigPath}`);
         // Check if the environment supports 'require' (CommonJS)
         try {
             // 如果类型为commonjs相关的使用require 
@@ -80,7 +80,7 @@ async function publish() {
     }
     const rootDir = config.root || ".";
     const pkgDir = path.resolve(cwdPath, rootDir);
-    log.info('\nroot dir', pkgDir);
+    log.info('root dir', pkgDir);
     // 执行前钩子
     if (config.before && typeof config.before === 'function') {
         await config.before({
@@ -149,7 +149,7 @@ async function publish() {
             log.success('git sync success');
         }
         if (config.syncGitTag) {
-            const syncGitTagSpinner = spinnerStart("git tag syncing ... \n")
+            const syncGitTagSpinner = spinnerStart("git tag syncing ...")
             let tag = `v${pkgJson.version}`
             if (config.gitTagFormat && typeof config.gitTagFormat === 'function') {
                 tag = config.gitTagFormat(pkgJson.version);
